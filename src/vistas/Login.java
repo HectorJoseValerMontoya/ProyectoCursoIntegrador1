@@ -2,9 +2,11 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
-package proyectoci1;
+package vistas;
 
 import javax.swing.JOptionPane;
+import modelos.Personal;
+import modelos.ValoresGlobales;
 
 /**
  *
@@ -67,7 +69,7 @@ public class Login extends javax.swing.JFrame {
         jPanel1.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 140, -1, -1));
         jPanel1.add(txtUser, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 110, 150, -1));
 
-        jLabel4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/proyectoci1/imagenes/prueba.png"))); // NOI18N
+        jLabel4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/proyectoci1/imagenes/imagenLogin.png"))); // NOI18N
         jPanel1.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 320, 200));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());

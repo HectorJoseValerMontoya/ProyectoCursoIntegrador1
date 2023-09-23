@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package proyectoci1;
+package modelos;
 
 //import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -17,5 +17,5 @@ public class DatosFactura extends DatosEmpleado {
     public List<Factura> factura = new ArrayList<>();
     public double costoTotalDeTodo = -1;
     public String responsable;
-    String fecha;
+    public String fecha;
 }

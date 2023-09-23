@@ -2,9 +2,10 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
-package proyectoci1;
+package vistas;
 
 import javax.swing.table.DefaultTableModel;
+import modelos.ValoresGlobales;
 
 /**
  *

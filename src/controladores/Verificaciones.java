@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package proyectoci1;
+package controladores;
 
 /**
  *
@@ -29,7 +29,7 @@ public class Verificaciones {
     }
     
     public boolean esVacio(String text){
-        if (text.equals("")){
+        if (text.isEmpty() || text.isBlank()){
             return true;
         }else{
             return false;
