@@ -34,8 +34,8 @@ public class RegistroFacturas extends javax.swing.JFrame {
 
         for (int i = 0; i < ValoresGlobales.personal.size(); i++) {
             arreglo = new String[2];
-            arreglo[0] = ValoresGlobales.personal.get(i).nombre;
-            arreglo[1] = ValoresGlobales.personal.get(i).codigo;
+            arreglo[0] = ValoresGlobales.personal.get(i).getNombreEmpleado();
+            arreglo[1] = ValoresGlobales.personal.get(i).getCodFichaEmpleado();
             modeloEmpleados.addRow(arreglo);
         }
         tablaEmpleados.setModel(modeloEmpleados);
@@ -129,8 +129,8 @@ public class RegistroFacturas extends javax.swing.JFrame {
             if (ValoresGlobales.datosFactura.get(i).responsable.equals(codigoResponsable)) {
                 String[] arreglo = new String[3];
                 
-                arreglo[0] = ValoresGlobales.datosFactura.get(i).nombre;
-                arreglo[1] = ValoresGlobales.datosFactura.get(i).codigo;
+                arreglo[0] = ValoresGlobales.datosFactura.get(i).getNombreEmpleado();
+                arreglo[1] = ValoresGlobales.datosFactura.get(i).getCodFichaEmpleado();
                 arreglo[2] = ValoresGlobales.datosFactura.get(i).fecha;
 
                 modeloFacturas.addRow(arreglo);

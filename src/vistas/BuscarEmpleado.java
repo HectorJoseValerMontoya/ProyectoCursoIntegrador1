@@ -135,11 +135,11 @@ public class BuscarEmpleado extends javax.swing.JFrame {
         model.setRowCount(0);
         if (!txtCodigo.getText().equals("")) {
             for (int i = 0; i < ValoresGlobales.personal.size(); i++) {
-                if (ValoresGlobales.personal.get(i).codigo.contains(txtCodigo.getText())) {
+                if (ValoresGlobales.personal.get(i).getCodFichaEmpleado().contains(txtCodigo.getText())) {
                     String[] arreglo = new String[3];
-                    arreglo[0] = ValoresGlobales.personal.get(i).codigo;
-                    arreglo[1] = ValoresGlobales.personal.get(i).nombre;
-                    arreglo[2] = ValoresGlobales.personal.get(i).area;
+                    arreglo[0] = ValoresGlobales.personal.get(i).getCodFichaEmpleado();
+                    arreglo[1] = ValoresGlobales.personal.get(i).getNombreEmpleado();
+                    arreglo[2] = ValoresGlobales.personal.get(i).getAreaEmpleado();
 
                     model.addRow(arreglo);
                 }
@@ -157,9 +157,9 @@ public class BuscarEmpleado extends javax.swing.JFrame {
         DatosEmpleado dats = new DatosEmpleado();
         for (int i = 0; i < model.getRowCount(); i++) {
             if (txtCodigo.getText().equals(model.getValueAt(i, 0).toString())) {
-                dats.codigo = model.getValueAt(i, 0).toString();
-                dats.nombre = model.getValueAt(i, 1).toString();
-                dats.area = model.getValueAt(i, 2).toString();
+                dats.setCodFichaEmpleado(model.getValueAt(i, 0).toString());
+                dats.setNombreEmpleado(model.getValueAt(i, 1).toString());
+                dats.setAreaEmpleado(model.getValueAt(i, 2).toString());
                 return dats;
             }
         }

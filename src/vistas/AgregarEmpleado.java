@@ -4,10 +4,13 @@
  */
 package vistas;
 
+import controladores.Controlar;
 import javax.swing.JOptionPane;
 import modelos.Personal;
 import modelos.ValoresGlobales;
 import controladores.Verificaciones;
+import dao.daoEmpleado;
+import java.util.List;
 
 /**
  *
@@ -42,6 +45,10 @@ public class AgregarEmpleado extends javax.swing.JFrame {
         jLabel4 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
         txtPasswordEmpleado = new javax.swing.JPasswordField();
+        jLabel6 = new javax.swing.JLabel();
+        txtProceso = new javax.swing.JTextField();
+        jLabel7 = new javax.swing.JLabel();
+        txtApellido = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -83,7 +90,7 @@ public class AgregarEmpleado extends javax.swing.JFrame {
 
         jLabel3.setText("Código:");
 
-        jLabel4.setText("(MAX 18)");
+        jLabel4.setText("(MAX 6)");
 
         jLabel5.setText("Password:");
 
@@ -92,6 +99,10 @@ public class AgregarEmpleado extends javax.swing.JFrame {
                 txtPasswordEmpleadoKeyReleased(evt);
             }
         });
+
+        jLabel6.setText("Proceso:");
+
+        jLabel7.setText("Apellido");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -102,25 +113,30 @@ public class AgregarEmpleado extends javax.swing.JFrame {
                 .addComponent(btnAgregar)
                 .addGap(39, 39, 39))
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, 66, Short.MAX_VALUE)
+                                .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addComponent(jLabel5)
+                            .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(6, 6, 6)
+                        .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 69, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, 66, Short.MAX_VALUE)
-                            .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(txtCodigo)
-                            .addComponent(txtNombre)
-                            .addComponent(comboArea, 0, 146, Short.MAX_VALUE)))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabel5)
-                        .addGap(18, 18, 18)
-                        .addComponent(txtPasswordEmpleado, javax.swing.GroupLayout.PREFERRED_SIZE, 147, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addComponent(txtApellido)
+                    .addComponent(txtNombre, javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(txtProceso, javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(comboArea, javax.swing.GroupLayout.Alignment.LEADING, 0, 147, Short.MAX_VALUE)
+                    .addComponent(txtCodigo, javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(txtPasswordEmpleado, javax.swing.GroupLayout.Alignment.LEADING))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel4)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -134,7 +150,11 @@ public class AgregarEmpleado extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1)
                     .addComponent(txtNombre, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel7)
+                    .addComponent(txtApellido, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(14, 14, 14)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
                     .addComponent(comboArea, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -142,7 +162,11 @@ public class AgregarEmpleado extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel5)
                     .addComponent(txtPasswordEmpleado, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 38, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel6)
+                    .addComponent(txtProceso, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 31, Short.MAX_VALUE)
                 .addComponent(btnAgregar)
                 .addGap(14, 14, 14))
         );
@@ -151,29 +175,38 @@ public class AgregarEmpleado extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     Verificaciones verificar = new Verificaciones();
+    Controlar control = new Controlar();
 
+    daoEmpleado daoE = new daoEmpleado();
+    
     private void habilitarBoton() {
         String pass = new String(txtPasswordEmpleado.getPassword());
-        if (!verificar.esEntero(txtCodigo.getText()) || verificar.esVacio(txtNombre.getText()) || comboArea.getSelectedIndex() == 0 || pass.length() == 0 || duplicado()) {
+        if (!verificar.esEntero(txtCodigo.getText()) || verificar.esVacio(txtNombre.getText()) || verificar.esVacio(txtApellido.getText()) || verificar.esVacio(txtProceso.getText()) ||comboArea.getSelectedIndex() == 0 || pass.length() == 0 || duplicado(control.completarCod(txtCodigo.getText()))) {
             btnAgregar.setEnabled(false);
         } else {
             btnAgregar.setEnabled(true);
         }
     }
 
+
     private void btnAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarActionPerformed
-    //ValoresGlobales.personal.add(new Personal());
+        //ValoresGlobales.personal.add(new Personal());
         Personal personal = new Personal();
-        personal.codigo = txtCodigo.getText();
-        personal.nombre = txtNombre.getText();
-        personal.area = comboArea.getSelectedItem().toString();
-        personal.password = new String(txtPasswordEmpleado.getPassword());
+        
+        personal.setCodFichaEmpleado(control.completarCod(txtCodigo.getText()));
+        personal.setNombreEmpleado(txtNombre.getText());
+        personal.setApellidoEmpleado(txtApellido.getText());
+        personal.setAreaEmpleado(comboArea.getSelectedItem().toString());
+        personal.setPasswordEmpleado(new String(txtPasswordEmpleado.getPassword()));
+        personal.setProceso(txtProceso.getText());
         ValoresGlobales.personal.add(personal);
 
         txtCodigo.setText("");
         txtNombre.setText("");
+        txtApellido.setText("");
         comboArea.setSelectedIndex(0);
         txtPasswordEmpleado.setText("");
+        txtProceso.setText("");
 
         BuscarEmpleado buscar = new BuscarEmpleado();
         buscar.setVisible(true);
@@ -181,14 +214,15 @@ public class AgregarEmpleado extends javax.swing.JFrame {
     }//GEN-LAST:event_btnAgregarActionPerformed
 
     //evitarDuplicados
-    private boolean duplicado() {
-        for (int i = 0; i < ValoresGlobales.personal.size(); i++) {
-            if (ValoresGlobales.personal.get(i).codigo.equals(txtCodigo.getText())) {
+    private boolean duplicado(String fichaEmpleado) {
+        for (Personal p : daoE.listarEmpleados()){
+            if (p.getCodFichaEmpleado().equals("SD"+fichaEmpleado)){
                 return true;
             }
         }
-
         return false;
+        
+        
     }
 
     private void comboAreaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_comboAreaActionPerformed
@@ -204,16 +238,17 @@ public class AgregarEmpleado extends javax.swing.JFrame {
     }//GEN-LAST:event_txtCodigoKeyReleased
 
     private void txtCodigoKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtCodigoKeyTyped
-        
-        int code = (int)evt.getKeyChar();
-        if (txtCodigo.getText().length() >= 18)
-            JOptionPane.showMessageDialog(this, "Solo puede contener 18 caracteres.");
-        if (!(code >= 48 && code <= 57) || txtCodigo.getText().length() >= 18)
+
+        int code = (int) evt.getKeyChar();
+        if (txtCodigo.getText().length() >= 6) {
+            JOptionPane.showMessageDialog(this, "Solo puede contener 6 caracteres.");
+        }
+        if (!(code >= 48 && code <= 57) || txtCodigo.getText().length() >= 6)
             evt.consume();
     }//GEN-LAST:event_txtCodigoKeyTyped
 
     private void txtNombreKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtNombreKeyTyped
-        int code = (int)evt.getKeyChar();
+        int code = (int) evt.getKeyChar();
         if (code >= 48 && code <= 57)
             evt.consume();
     }//GEN-LAST:event_txtNombreKeyTyped
@@ -266,8 +301,12 @@ public class AgregarEmpleado extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
+    private javax.swing.JTextField txtApellido;
     private javax.swing.JTextField txtCodigo;
     private javax.swing.JTextField txtNombre;
     private javax.swing.JPasswordField txtPasswordEmpleado;
+    private javax.swing.JTextField txtProceso;
     // End of variables declaration//GEN-END:variables
 }

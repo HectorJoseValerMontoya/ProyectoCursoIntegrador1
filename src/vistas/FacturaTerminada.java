@@ -31,7 +31,7 @@ public class FacturaTerminada extends javax.swing.JFrame {
     }
     
     private void mostrarEnTabla(){
-        lblDatosEmpleado.setText("Nombre empleado: " + datsFact.nombre + "           Código: " + datsFact.codigo + "           Área: " + datsFact.area + "           Fecha: " + datsFact.fecha.toString());
+        lblDatosEmpleado.setText("Nombre empleado: " + datsFact.getNombreEmpleado() + "           Código: " + datsFact.getCodFichaEmpleado() + "           Área: " + datsFact.getAreaEmpleado() + "           Fecha: " + datsFact.fecha.toString());
         
         List<Factura> fact = datsFact.factura;
         

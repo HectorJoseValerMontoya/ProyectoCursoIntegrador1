@@ -36,10 +36,10 @@ public class EmitirFactura extends javax.swing.JFrame {
     //public EmitirFactura(String nomEmpleado, String cod, String area) {
     public EmitirFactura(DatosEmpleado dats) {
         initComponents();
-        lblDatosEmpleado.setText("Nombre empleado: " + dats.nombre + "           Código: " + dats.codigo + "           Área: " + dats.area);
-        datsFact.nombre = dats.nombre;
-        datsFact.codigo = dats.codigo;
-        datsFact.area = dats.area;
+        lblDatosEmpleado.setText("Nombre empleado: " + dats.getNombreEmpleado() + "           Código: " + dats.getCodFichaEmpleado() + "           Área: " + dats.getAreaEmpleado());
+        datsFact.setNombreEmpleado(dats.getNombreEmpleado());
+        datsFact.setCodFichaEmpleado(dats.getCodFichaEmpleado());
+        datsFact.setAreaEmpleado(dats.getAreaEmpleado());
         datsFact.responsable = ValoresGlobales.codigoUsuarioActual;
         
         
