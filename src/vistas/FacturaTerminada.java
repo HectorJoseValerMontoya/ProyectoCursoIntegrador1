@@ -4,11 +4,16 @@
  */
 package vistas;
 
+import dao.daoActividad;
+import dao.daoDetalleFactura;
+import dao.daoEmpleado;
+import dao.daoFactura;
 import java.util.List;
 import javax.swing.table.DefaultTableModel;
-import modelos.DatosFactura;
+import modelos.Actividad;
+import modelos.DetalleFactura;
 import modelos.Factura;
-import modelos.ValoresGlobales;
+import modelos.Personal;
 
 /**
  *
@@ -19,45 +24,57 @@ public class FacturaTerminada extends javax.swing.JFrame {
     /**
      * Creates new form FacturaTerminada
      */
-    
     DefaultTableModel modelo;
-    DatosFactura datsFact;
-    
-    private void mostrarFact(int pos){
-        datsFact = ValoresGlobales.datosFactura.get(pos);
-        lblCostoTotalDeTodo.setText(String.valueOf(datsFact.costoTotalDeTodo));
+
+
+    daoFactura daoF = new daoFactura();
+    daoDetalleFactura daoDF = new daoDetalleFactura();
+    daoEmpleado daoE = new daoEmpleado();
+    daoActividad daoA = new daoActividad();
+    Personal e = new Personal();
+
+    Factura fact;
+    List<DetalleFactura> dfs;
+
+    private void mostrarFact(int codFactura) {
+        fact = daoF.buscarFactura(codFactura);
+        dfs = daoDF.listarDetalleFacturaDeFactura(codFactura);
+        e = daoE.buscarEmpleado(fact.getCodEmpleado());
+
+        lblCostoTotalDeTodo.setText(String.valueOf(fact.getCostoTotal()));
+        lblDatosEmpleado.setText("Datos de empleado: ----- Nombre: " + e.getNombreEmpleado() + "   -   Apellido: " + e.getApellidoEmpleado() + "     Código: " + e.getCodFichaEmpleado() + "     Área: " + e.getAreaEmpleado() + "     Fecha: " + fact.getFechaFactura() + " - " + fact.getHoraFactura());
         mostrarEnTabla();
-        
+
     }
-    
-    private void mostrarEnTabla(){
-        lblDatosEmpleado.setText("Nombre empleado: " + datsFact.getNombreEmpleado() + "           Código: " + datsFact.getCodFichaEmpleado() + "           Área: " + datsFact.getAreaEmpleado() + "           Fecha: " + datsFact.fecha.toString());
-        
-        List<Factura> fact = datsFact.factura;
-        
+
+    private void mostrarEnTabla() {
+
         modelo = (DefaultTableModel) tablaFactura.getModel();
-        
-        for (int i = 0; i < fact.size(); i++) {
-            String dats[] = new String[5];
-            dats[0] = fact.get(i).codigo;
-            dats[1] = fact.get(i).descripcionDeCodigo;
-            dats[2] = String.valueOf(fact.get(i).cantidadDelCodigo);
-            dats[3] = String.valueOf(fact.get(i).costoUnitarioPorCodigo);
-            dats[4] = String.valueOf(fact.get(i).costoTotalPorCodigo);
-            modelo.addRow(dats);
+
+        for (DetalleFactura df : dfs) {
+            Actividad act = daoA.buscarActividad(df.getCodActividad());
+            String[] d = new String[5];
+            d[0] = act.getCodNombreActividad();
+            d[1] = act.getDescripcionActividad();
+            d[2] = String.valueOf(df.getCantidadDeActividad());
+            d[3] = String.valueOf(act.getPrecioUnitarioActividad());
+            d[4] = String.valueOf(df.getCostoSubtotal());
+            
+            modelo.addRow(d);
         }
-        
+      
+
         tablaFactura.setModel(modelo);
     }
-    
-    public FacturaTerminada(int pos) {
+
+    public FacturaTerminada(int codFactura) {
         initComponents();
-        mostrarFact(pos);
+        mostrarFact(codFactura);
     }
-    
+
     public FacturaTerminada() {
         initComponents();
-        mostrarFact(ValoresGlobales.datosFactura.size() - 1);
+        this.dispose();
     }
 
     /**
@@ -117,18 +134,18 @@ public class FacturaTerminada extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 154, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(504, 504, 504))
+                        .addGap(504, 619, Short.MAX_VALUE))
                     .addComponent(lblDatosEmpleado, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 758, Short.MAX_VALUE)
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                .addComponent(btnSalir)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(jLabel2)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(lblCostoTotalDeTodo, javax.swing.GroupLayout.PREFERRED_SIZE, 101, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addContainerGap())))
+                        .addComponent(jScrollPane1)
+                        .addContainerGap())
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addComponent(btnSalir)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jLabel2)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(lblCostoTotalDeTodo, javax.swing.GroupLayout.PREFERRED_SIZE, 101, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(120, 120, 120))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)

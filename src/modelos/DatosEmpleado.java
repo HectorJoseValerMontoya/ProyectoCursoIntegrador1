@@ -14,7 +14,6 @@ public class DatosEmpleado {
     private int codEmpeado;
 
     private String proceso;
-    String area;
 
     public String getNombreEmpleado() {
         return nombreEmpleado;
@@ -70,14 +69,6 @@ public class DatosEmpleado {
 
     public void setProceso(String proceso) {
         this.proceso = proceso;
-    }
-
-    public String getArea() {
-        return area;
-    }
-
-    public void setArea(String area) {
-        this.area = area;
     }
 
 }

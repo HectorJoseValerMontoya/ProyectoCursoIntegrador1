@@ -4,8 +4,11 @@
  */
 package vistas;
 
+import dao.daoEmpleado;
+import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import modelos.DatosEmpleado;
+import modelos.Personal;
 import modelos.ValoresGlobales;
 
 /**
@@ -58,7 +61,7 @@ public class BuscarEmpleado extends javax.swing.JFrame {
 
             },
             new String [] {
-                "Código", "Nombre", "Área"
+                "Código", "Nombre & Apellido", "Área"
             }
         ));
         tableEmpleados.setToolTipText("");
@@ -110,6 +113,9 @@ public class BuscarEmpleado extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    
+    daoEmpleado daoE = new daoEmpleado();
+    
     private boolean estaEnTabla() {
         for (int i = 0; i < model.getRowCount(); i++) {
             if (txtCodigo.getText().equals(model.getValueAt(i, 0).toString())) {
@@ -134,13 +140,13 @@ public class BuscarEmpleado extends javax.swing.JFrame {
     private void buscar() {
         model.setRowCount(0);
         if (!txtCodigo.getText().equals("")) {
-            for (int i = 0; i < ValoresGlobales.personal.size(); i++) {
-                if (ValoresGlobales.personal.get(i).getCodFichaEmpleado().contains(txtCodigo.getText())) {
+            for(Personal p : daoE.listarEmpleados()){
+                if (p.getCodFichaEmpleado().contains(txtCodigo.getText())){
                     String[] arreglo = new String[3];
-                    arreglo[0] = ValoresGlobales.personal.get(i).getCodFichaEmpleado();
-                    arreglo[1] = ValoresGlobales.personal.get(i).getNombreEmpleado();
-                    arreglo[2] = ValoresGlobales.personal.get(i).getAreaEmpleado();
-
+                    arreglo[0] = p.getCodFichaEmpleado();
+                    arreglo[1] = p.getNombreEmpleado() + " & " + p.getApellidoEmpleado();
+                    arreglo[2] = p.getAreaEmpleado();
+                    
                     model.addRow(arreglo);
                 }
             }
@@ -153,18 +159,17 @@ public class BuscarEmpleado extends javax.swing.JFrame {
         verificarBoton();
     }//GEN-LAST:event_txtCodigoKeyReleased
 
-    public DatosEmpleado recogerDatos() {
-        DatosEmpleado dats = new DatosEmpleado();
+    public Personal recogerDatos() {
+        Personal personal = null;
         for (int i = 0; i < model.getRowCount(); i++) {
             if (txtCodigo.getText().equals(model.getValueAt(i, 0).toString())) {
-                dats.setCodFichaEmpleado(model.getValueAt(i, 0).toString());
-                dats.setNombreEmpleado(model.getValueAt(i, 1).toString());
-                dats.setAreaEmpleado(model.getValueAt(i, 2).toString());
-                return dats;
+                personal = daoE.buscarEmpleado(txtCodigo.getText());
+
+                return personal;
             }
         }
 
-        return null;
+        return personal;
     }
 
     private void btnEmitirFacturaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEmitirFacturaActionPerformed
@@ -172,6 +177,8 @@ public class BuscarEmpleado extends javax.swing.JFrame {
         //EmitirFactura fact = new EmitirFactura(model.getValueAt(0, 0).toString(), model.getValueAt(0, 1).toString(), model.getValueAt(0, 2).toString());
         txtCodigo.requestFocus();
         EmitirFactura fact = new EmitirFactura(recogerDatos());
+                //JOptionPane.showMessageDialog(this, "hola");
+
         fact.setVisible(true);
 
 

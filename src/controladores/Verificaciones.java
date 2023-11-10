@@ -29,12 +29,7 @@ public class Verificaciones {
     }
     
     public boolean esVacio(String text){
-        if (text.isEmpty() || text.isBlank()){
-            return true;
-        }else{
-            return false;
-        }
+        return text.isEmpty() || text.isBlank();
     }
-    
     
 }

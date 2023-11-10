@@ -13,37 +13,49 @@ public class Actividad {
     public Actividad() {
     }
 
-    public Actividad(String codigo, double precioUnitario, String descripcion) {
-        this.codigo = codigo;
-        this.precioUnitario = precioUnitario;
-        this.descripcion = descripcion;
+    public Actividad(int codActividad, String codNombreActividad, double precioUnitarioActividad, String descripcionActividad) {
+        this.codActividad = codActividad;
+        this.codNombreActividad = codNombreActividad;
+        this.precioUnitarioActividad = precioUnitarioActividad;
+        this.descripcionActividad = descripcionActividad;
     }
-    private String codigo;
-    private double precioUnitario;
-    private String descripcion;
+    private int codActividad;
+    private String codNombreActividad;
+    private double precioUnitarioActividad;
+    private String descripcionActividad;
 
-    public String getCodigo() {
-        return codigo;
-    }
-
-    public void setCodigo(String codigo) {
-        this.codigo = codigo;
-    }
-
-    public double getPrecioUnitario() {
-        return precioUnitario;
+    
+    
+    public String getCodNombreActividad() {
+        return codNombreActividad;
     }
 
-    public void setPrecioUnitario(double precioUnitario) {
-        this.precioUnitario = precioUnitario;
+    public void setCodNombreActividad(String codActividad) {
+        this.codNombreActividad = codActividad;
     }
 
-    public String getDescripcion() {
-        return descripcion;
+    public double getPrecioUnitarioActividad() {
+        return precioUnitarioActividad;
     }
 
-    public void setDescripcion(String descripcion) {
-        this.descripcion = descripcion;
+    public void setPrecioUnitarioActividad(double precioUnitarioActividad) {
+        this.precioUnitarioActividad = precioUnitarioActividad;
+    }
+
+    public String getDescripcionActividad() {
+        return descripcionActividad;
+    }
+
+    public void setDescripcionActividad(String descripcionActividad) {
+        this.descripcionActividad = descripcionActividad;
+    }
+
+    public int getCodActividad() {
+        return codActividad;
+    }
+
+    public void setCodActividad(int codActividad) {
+        this.codActividad = codActividad;
     }
 
 }

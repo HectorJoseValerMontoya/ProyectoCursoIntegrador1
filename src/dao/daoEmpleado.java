@@ -21,7 +21,6 @@ public class daoEmpleado {
 
     public List<Personal> listarEmpleados() {
         List<Personal> empleados = new ArrayList<>();
-        Personal p = null;
         String sql = "select  * from empleado;";
         Connection con = null;
         PreparedStatement ps;
@@ -32,13 +31,13 @@ public class daoEmpleado {
             ps = con.prepareStatement(sql);
             rs = ps.executeQuery();
             while (rs.next()) {
-                p = new Personal();
+                Personal p = new Personal();
                 p.setCodEmpeado(rs.getInt(1));
                 p.setCodFichaEmpleado(rs.getString(2));
                 p.setApellidoEmpleado(rs.getString(3));
                 p.setNombreEmpleado(rs.getString(4));
                 p.setProceso(rs.getString(5));
-                p.setArea(rs.getString(6));
+                p.setAreaEmpleado(rs.getString(6));
                 p.setPasswordEmpleado(rs.getString(7));
 
                 empleados.add(p);
@@ -52,7 +51,7 @@ public class daoEmpleado {
         return empleados;
     }
 
-    public Personal buscarEmpleados(String codFichaEmpleado) {
+    public Personal buscarEmpleado(String codFichaEmpleado) {
         Personal p = null;
         String sql = "select  * from empleado where codFichaEmpleado = ?;";
         Connection con = null;
@@ -71,7 +70,37 @@ public class daoEmpleado {
                 p.setApellidoEmpleado(rs.getString(3));
                 p.setNombreEmpleado(rs.getString(4));
                 p.setProceso(rs.getString(5));
-                p.setArea(rs.getString(6));
+                p.setAreaEmpleado(rs.getString(6));
+                p.setPasswordEmpleado(rs.getString(7));
+            }
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, e.getMessage());
+            System.out.println("Error:" + e);
+        }
+
+        return p;
+    }
+    
+    public Personal buscarEmpleado(int codEmpleado) {
+        Personal p = null;
+        String sql = "select  * from empleado where codEmpleado = ?;";
+        Connection con = null;
+        PreparedStatement ps;
+        ResultSet rs;
+
+        try {
+            con = conf.MySql.Conexion();
+            ps = con.prepareStatement(sql);
+            ps.setInt(1, codEmpleado);
+            rs = ps.executeQuery();
+            if (rs.next()) {
+                p = new Personal();
+                p.setCodEmpeado(rs.getInt(1));
+                p.setCodFichaEmpleado(rs.getString(2));
+                p.setApellidoEmpleado(rs.getString(3));
+                p.setNombreEmpleado(rs.getString(4));
+                p.setProceso(rs.getString(5));
+                p.setAreaEmpleado(rs.getString(6));
                 p.setPasswordEmpleado(rs.getString(7));
             }
         } catch (SQLException e) {
@@ -94,7 +123,7 @@ public class daoEmpleado {
             ps.setString(2, p.getApellidoEmpleado());
             ps.setString(3, p.getNombreEmpleado());
             ps.setString(4, p.getProceso());
-            ps.setString(5, p.getArea());
+            ps.setString(5, p.getAreaEmpleado());
             ps.setString(6, p.getPasswordEmpleado());
 
             ps.executeUpdate();

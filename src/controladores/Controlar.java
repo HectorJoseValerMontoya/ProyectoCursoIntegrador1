@@ -14,7 +14,7 @@ public class Controlar {
         String temp = "";
         
         
-        for (int i = cod.length(); i < 7; i++) {
+        for (int i = cod.length(); i < 6; i++) {
             temp += "0";
         }
         temp += cod;

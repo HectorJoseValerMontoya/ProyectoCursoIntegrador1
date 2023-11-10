@@ -9,11 +9,17 @@ import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import modelos.Actividad;
 import modelos.DatosEmpleado;
-import modelos.DatosFactura;
+
 import modelos.Factura;
 import modelos.ValoresGlobales;
 import controladores.Verificaciones;
-
+import dao.daoActividad;
+import dao.daoDetalleFactura;
+import dao.daoFactura;
+import java.util.ArrayList;
+import java.util.List;
+import modelos.DetalleFactura;
+import modelos.Personal;
 
 /**
  *
@@ -27,34 +33,37 @@ public class EmitirFactura extends javax.swing.JFrame {
      */
     DefaultTableModel modelo;
 
-    DatosFactura datsFact = new DatosFactura();
 
     public EmitirFactura() {
         initComponents();
     }
 
+    Factura factura = new Factura();
+    daoActividad daoA = new daoActividad();
+    List<Actividad> actividades = daoA.listarActividades();
+    List<DetalleFactura> detalleFactura = new ArrayList<>();
+    daoFactura daoF = new daoFactura();
+    daoDetalleFactura daoDF = new daoDetalleFactura();
+
     //public EmitirFactura(String nomEmpleado, String cod, String area) {
-    public EmitirFactura(DatosEmpleado dats) {
+    public EmitirFactura(Personal personal) {
         initComponents();
-        lblDatosEmpleado.setText("Nombre empleado: " + dats.getNombreEmpleado() + "           Código: " + dats.getCodFichaEmpleado() + "           Área: " + dats.getAreaEmpleado());
-        datsFact.setNombreEmpleado(dats.getNombreEmpleado());
-        datsFact.setCodFichaEmpleado(dats.getCodFichaEmpleado());
-        datsFact.setAreaEmpleado(dats.getAreaEmpleado());
-        datsFact.responsable = ValoresGlobales.codigoUsuarioActual;
+
+        lblDatosEmpleado.setText("Nombre empleado: " + personal.getNombreEmpleado() + "Apellido empleado: " + personal.getApellidoEmpleado() + "           Código: " + personal.getCodFichaEmpleado() + "           Área: " + personal.getAreaEmpleado());
+
+        //factura.setCodEmpleado(personal.getCodEmpeado());
+        factura.setCodEmpleado(ValoresGlobales.personalDatosEmpleado.getCodEmpeado());
+        factura.setCodFactura(daoF.siguienteFactura());
         
-        
+
         modelo = (DefaultTableModel) tablaFactura.getModel();
-        ValoresGlobales.actividades.clear();
-        ValoresGlobales.actividades.add(new Actividad("B11", 10, "Inspección de Reclamo"));
-        ValoresGlobales.actividades.add(new Actividad("B13", 10, "Inspección de uso unico"));
-        ValoresGlobales.actividades.add(new Actividad("B15", 15, "Inspección Especial con geofono"));
-        ValoresGlobales.actividades.add(new Actividad("B16", 8, "Inspección externa"));
-        ValoresGlobales.actividades.add(new Actividad("B20", 2, "Mantenimiento Catastral"));
 
         comboActividad.addItem("Seleccione actividad.");
-        for (Actividad actividad : ValoresGlobales.actividades) {
-            comboActividad.addItem(actividad.getCodigo());
+
+        for (Actividad act : actividades) {
+            comboActividad.addItem(act.getCodNombreActividad());
         }
+
     }
 
     /**
@@ -200,63 +209,69 @@ public class EmitirFactura extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private double actualizarCostoTotal(){
-        datsFact.costoTotalDeTodo = 0;
-        
-        for (int i = 0; i < datsFact.factura.size(); i++) {
-            datsFact.costoTotalDeTodo += datsFact.factura.get(i).costoTotalPorCodigo;
+    private double actualizarCostoTotal() {
+        double costoTotal = 0;
+
+        for (DetalleFactura df : detalleFactura) {
+            costoTotal += df.getCostoSubtotal();
         }
-        
-        return datsFact.costoTotalDeTodo;
+
+        return costoTotal;
     }
-    
+
+    private void actualizarADetalleFactura(DetalleFactura _df) {
+        for (DetalleFactura df : detalleFactura) {
+            if (df.getCodActividad() == _df.getCodActividad()) {
+                df.setCantidadDeActividad(df.getCantidadDeActividad() + _df.getCantidadDeActividad());
+                df.setCostoSubtotal(df.getCantidadDeActividad() * actividades.get(df.getCodActividad() - 1).getPrecioUnitarioActividad());
+            }
+        }
+    }
+
     private void btnAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarActionPerformed
         Verificaciones verificar = new Verificaciones();
         if (comboActividad.getSelectedIndex() != 0 && verificar.esEnteroLargo(txtCantidad.getText()) && Integer.parseInt(txtCantidad.getText()) > 0) {
 
             modelo.setRowCount(0);
-            Factura fact = new Factura();
-            int pos = comboActividad.getSelectedIndex() - 1;
-            fact.codigo = ValoresGlobales.actividades.get(pos).getCodigo();
-            fact.cantidadDelCodigo = Long.parseLong(txtCantidad.getText());
-            fact.descripcionDeCodigo = ValoresGlobales.actividades.get(pos).getDescripcion();
-            fact.costoUnitarioPorCodigo = ValoresGlobales.actividades.get(pos).getPrecioUnitario();
-            fact.costoTotalPorCodigo = fact.costoUnitarioPorCodigo * fact.cantidadDelCodigo;
+
+            DetalleFactura detalleFact = new DetalleFactura();
+
+            detalleFact.setCodDetalleFactura(daoDF.siguienteDetalleFactura());
+            detalleFact.setCodFactura(factura.getCodFactura());
+            detalleFact.setCodActividad(actividades.get(comboActividad.getSelectedIndex() - 1).getCodActividad());
+            detalleFact.setCantidadDeActividad(Long.parseLong(txtCantidad.getText()));
+            detalleFact.setCostoSubtotal(detalleFact.getCantidadDeActividad() * actividades.get(comboActividad.getSelectedIndex() - 1).getPrecioUnitarioActividad());
 
             boolean encontrado = false;
-            for (int i = 0; i < datsFact.factura.size(); i++) {
-                if (datsFact.factura.get(i).codigo.equals(ValoresGlobales.actividades.get(pos).getCodigo())) {
-                    
-                    Factura factACtualizar = datsFact.factura.get(i);
-                    
-                    factACtualizar.cantidadDelCodigo += fact.cantidadDelCodigo;
-                    factACtualizar.costoTotalPorCodigo += (fact.costoUnitarioPorCodigo * fact.cantidadDelCodigo);
 
+            for (DetalleFactura df : detalleFactura) {
+                if (df.getCodActividad() == detalleFact.getCodActividad()) {
+                    actualizarADetalleFactura(detalleFact);
                     encontrado = true;
-                    datsFact.factura.set(i, factACtualizar);
                 }
             }
 
             if (!encontrado) {
-                datsFact.factura.add(fact);
+                detalleFactura.add(detalleFact);
             }
 
             modelo.setRowCount(0);
-            for (int i = 0; i < datsFact.factura.size(); i++) {
-
+            for (DetalleFactura df : detalleFactura) {
                 String[] arreglo = new String[5];
-                arreglo[0] = datsFact.factura.get(i).codigo;
-                arreglo[1] = datsFact.factura.get(i).descripcionDeCodigo;
-                arreglo[2] = String.valueOf(datsFact.factura.get(i).cantidadDelCodigo);
-                arreglo[3] = String.valueOf(datsFact.factura.get(i).costoUnitarioPorCodigo);
-                arreglo[4] = String.valueOf(datsFact.factura.get(i).costoTotalPorCodigo);
+
+                arreglo[0] = daoA.buscarActividad(df.getCodActividad()).getCodNombreActividad();
+                arreglo[1] = actividades.get(df.getCodActividad() - 1).getDescripcionActividad();
+                arreglo[2] = String.valueOf(df.getCantidadDeActividad());
+                arreglo[3] = String.valueOf(actividades.get(df.getCodActividad() - 1).getPrecioUnitarioActividad());
+                arreglo[4] = String.valueOf(df.getCostoSubtotal());
+
                 modelo.addRow(arreglo);
             }
 
             tablaFactura.setModel(modelo);
 
             lblCostoTotalDeTodo.setText(String.valueOf(actualizarCostoTotal()));
-            
+
             txtCantidad.setText("");
             lblCostoUnitario.setText("");
             comboActividad.setSelectedIndex(0);
@@ -271,21 +286,24 @@ public class EmitirFactura extends javax.swing.JFrame {
     private void comboActividadActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_comboActividadActionPerformed
         int pos = comboActividad.getSelectedIndex() - 1;
         try {
-            lblCostoUnitario.setText(String.valueOf(ValoresGlobales.actividades.get(pos).getPrecioUnitario()));
+            lblCostoUnitario.setText(String.valueOf(actividades.get(pos).getPrecioUnitarioActividad()));
         } catch (Exception ex) {
             comboActividad.setSelectedIndex(0);
             lblCostoUnitario.setText("");
         }
     }//GEN-LAST:event_comboActividadActionPerformed
 
+
     private void btnTerminarFacturaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTerminarFacturaActionPerformed
 
-        //Actualiza
-        datsFact.fecha =  LocalDateTime.now().toLocalDate() + " - " + LocalDateTime.now().toLocalTime().toString();
-        
-        ValoresGlobales.datosFactura.add(datsFact);
-        
-        FacturaTerminada factTerm = new FacturaTerminada();
+        factura.setCostoTotal(actualizarCostoTotal());
+        factura.setFechaFactura(LocalDateTime.now().toLocalDate().toString());
+        factura.setHoraFactura(LocalDateTime.now().toLocalTime().toString());
+
+        daoF.insertarFactura(factura);
+        daoDF.insertarDetalleFactura(detalleFactura);
+
+        FacturaTerminada factTerm = new FacturaTerminada(factura.getCodFactura());
         factTerm.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_btnTerminarFacturaActionPerformed

@@ -92,7 +92,7 @@ public class Login extends javax.swing.JFrame {
         String pass = new String(txtPassword.getPassword());
         Personal empleado = null;
         try {
-            empleado = daoE.buscarEmpleados(txtUser.getText().toUpperCase());
+            empleado = daoE.buscarEmpleado(txtUser.getText().toUpperCase());
         } catch (Exception ex) {
         }
         
@@ -101,9 +101,16 @@ public class Login extends javax.swing.JFrame {
             p.setVisible(true);
             txtUser.setText("");
             txtPassword.setText("");
-            ValoresGlobales.codigoUsuarioActual = "000000000";
-            ValoresGlobales.nombreUsuarioActual = "Admin";
+            ValoresGlobales.personalDatosEmpleado.setCodEmpeado(1);
+            ValoresGlobales.personalDatosEmpleado.setCodFichaEmpleado("SD000000");
+            ValoresGlobales.personalDatosEmpleado.setNombreEmpleado("user");
+            ValoresGlobales.personalDatosEmpleado.setApellidoEmpleado("admin");
+            ValoresGlobales.personalDatosEmpleado.setPasswordEmpleado("admin");
+            ValoresGlobales.personalDatosEmpleado.setAreaEmpleado("Administrador");
+            ValoresGlobales.personalDatosEmpleado.setProceso("Administrar");
+            
         } else if (empleado != null && empleado.getPasswordEmpleado().equals(pass)) {
+            ValoresGlobales.personalDatosEmpleado = empleado;
             principalEmpleado p = new principalEmpleado();
             p.setVisible(true);
             txtUser.setText("");

@@ -49,6 +49,7 @@ public class AgregarEmpleado extends javax.swing.JFrame {
         txtProceso = new javax.swing.JTextField();
         jLabel7 = new javax.swing.JLabel();
         txtApellido = new javax.swing.JTextField();
+        lblError = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -102,14 +103,33 @@ public class AgregarEmpleado extends javax.swing.JFrame {
 
         jLabel6.setText("Proceso:");
 
+        txtProceso.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                txtProcesoKeyReleased(evt);
+            }
+        });
+
         jLabel7.setText("Apellido");
+
+        txtApellido.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                txtApellidoKeyReleased(evt);
+            }
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtApellidoKeyTyped(evt);
+            }
+        });
+
+        lblError.setForeground(new java.awt.Color(255, 0, 0));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap()
+                .addComponent(lblError, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnAgregar)
                 .addGap(39, 39, 39))
             .addGroup(layout.createSequentialGroup()
@@ -167,8 +187,11 @@ public class AgregarEmpleado extends javax.swing.JFrame {
                     .addComponent(jLabel6)
                     .addComponent(txtProceso, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 31, Short.MAX_VALUE)
-                .addComponent(btnAgregar)
-                .addGap(14, 14, 14))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addComponent(btnAgregar)
+                        .addGap(14, 14, 14))
+                    .addComponent(lblError, javax.swing.GroupLayout.Alignment.TRAILING)))
         );
 
         pack();
@@ -178,10 +201,10 @@ public class AgregarEmpleado extends javax.swing.JFrame {
     Controlar control = new Controlar();
 
     daoEmpleado daoE = new daoEmpleado();
-    
+
     private void habilitarBoton() {
         String pass = new String(txtPasswordEmpleado.getPassword());
-        if (!verificar.esEntero(txtCodigo.getText()) || verificar.esVacio(txtNombre.getText()) || verificar.esVacio(txtApellido.getText()) || verificar.esVacio(txtProceso.getText()) ||comboArea.getSelectedIndex() == 0 || pass.length() == 0 || duplicado(control.completarCod(txtCodigo.getText()))) {
+        if (duplicado(txtCodigo.getText()) || !verificar.esEntero(txtCodigo.getText()) || verificar.esVacio(txtNombre.getText()) || verificar.esVacio(txtApellido.getText()) || verificar.esVacio(txtProceso.getText()) || comboArea.getSelectedIndex() == 0 || pass.length() == 0) {
             btnAgregar.setEnabled(false);
         } else {
             btnAgregar.setEnabled(true);
@@ -192,15 +215,18 @@ public class AgregarEmpleado extends javax.swing.JFrame {
     private void btnAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarActionPerformed
         //ValoresGlobales.personal.add(new Personal());
         Personal personal = new Personal();
-        
+
         personal.setCodFichaEmpleado(control.completarCod(txtCodigo.getText()));
         personal.setNombreEmpleado(txtNombre.getText());
         personal.setApellidoEmpleado(txtApellido.getText());
         personal.setAreaEmpleado(comboArea.getSelectedItem().toString());
         personal.setPasswordEmpleado(new String(txtPasswordEmpleado.getPassword()));
         personal.setProceso(txtProceso.getText());
-        ValoresGlobales.personal.add(personal);
 
+        daoE.AgregarEmpleado(personal);
+        
+        
+        //ValoresGlobales.personal.add(personal); <- Quitar
         txtCodigo.setText("");
         txtNombre.setText("");
         txtApellido.setText("");
@@ -215,14 +241,12 @@ public class AgregarEmpleado extends javax.swing.JFrame {
 
     //evitarDuplicados
     private boolean duplicado(String fichaEmpleado) {
-        for (Personal p : daoE.listarEmpleados()){
-            if (p.getCodFichaEmpleado().equals("SD"+fichaEmpleado)){
-                return true;
-            }
+        if (daoE.buscarEmpleado("SD" + control.completarCod(fichaEmpleado)) != null){
+            lblError.setText("CodigoDuplicado!!!");
+            return true;
         }
+        lblError.setText("");
         return false;
-        
-        
     }
 
     private void comboAreaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_comboAreaActionPerformed
@@ -239,23 +263,38 @@ public class AgregarEmpleado extends javax.swing.JFrame {
 
     private void txtCodigoKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtCodigoKeyTyped
 
-        int code = (int) evt.getKeyChar();
         if (txtCodigo.getText().length() >= 6) {
             JOptionPane.showMessageDialog(this, "Solo puede contener 6 caracteres.");
         }
-        if (!(code >= 48 && code <= 57) || txtCodigo.getText().length() >= 6)
+
+        if (!verificar.esEntero((String.valueOf(evt.getKeyChar()))) || txtCodigo.getText().length() >= 6)
             evt.consume();
     }//GEN-LAST:event_txtCodigoKeyTyped
 
+
     private void txtNombreKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtNombreKeyTyped
-        int code = (int) evt.getKeyChar();
-        if (code >= 48 && code <= 57)
+        if (verificar.esEntero(String.valueOf(evt.getKeyChar()))) {
             evt.consume();
+        }
     }//GEN-LAST:event_txtNombreKeyTyped
 
     private void txtPasswordEmpleadoKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtPasswordEmpleadoKeyReleased
         habilitarBoton();
     }//GEN-LAST:event_txtPasswordEmpleadoKeyReleased
+
+    private void txtApellidoKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtApellidoKeyReleased
+        habilitarBoton();
+    }//GEN-LAST:event_txtApellidoKeyReleased
+
+    private void txtProcesoKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtProcesoKeyReleased
+        habilitarBoton();
+    }//GEN-LAST:event_txtProcesoKeyReleased
+
+    private void txtApellidoKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtApellidoKeyTyped
+        if (verificar.esEntero(String.valueOf(evt.getKeyChar()))) {
+            evt.consume();
+        }
+    }//GEN-LAST:event_txtApellidoKeyTyped
 
     /**
      * @param args the command line arguments
@@ -303,6 +342,7 @@ public class AgregarEmpleado extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel lblError;
     private javax.swing.JTextField txtApellido;
     private javax.swing.JTextField txtCodigo;
     private javax.swing.JTextField txtNombre;

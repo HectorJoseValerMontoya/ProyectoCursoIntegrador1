@@ -4,8 +4,11 @@
  */
 package vistas;
 
+import dao.daoEmpleado;
+import dao.daoFactura;
 import javax.swing.table.DefaultTableModel;
-import modelos.ValoresGlobales;
+import modelos.Factura;
+import modelos.Personal;
 
 /**
  *
@@ -16,26 +19,30 @@ public class RegistroFacturas extends javax.swing.JFrame {
     /**
      * Creates new form RegistroFacturas
      */
-    String nombre, codigoResponsable, fecha;
+    //String codigoResponsable, fecha;
+    boolean facturaSeleccionada = false;
 
     DefaultTableModel modeloEmpleados;
     DefaultTableModel modeloFacturas;
+
+    daoEmpleado daoE = new daoEmpleado();
+    daoFactura daoF = new daoFactura();
 
     public RegistroFacturas() {
         initComponents();
         modeloEmpleados = (DefaultTableModel) tablaEmpleados.getModel();
         modeloFacturas = (DefaultTableModel) tablaFacturas.getModel();
-        String[] arreglo = new String[2];
+//        String[] arreglo = new String[2];
+//
+//        arreglo[0] = "user";
+//        arreglo[1] = "SD000000";
 
-        arreglo[0] = "User";
-        arreglo[1] = "000000000";
+//        modeloEmpleados.addRow(arreglo);
 
-        modeloEmpleados.addRow(arreglo);
-
-        for (int i = 0; i < ValoresGlobales.personal.size(); i++) {
-            arreglo = new String[2];
-            arreglo[0] = ValoresGlobales.personal.get(i).getNombreEmpleado();
-            arreglo[1] = ValoresGlobales.personal.get(i).getCodFichaEmpleado();
+        for (Personal p : daoE.listarEmpleados()) {
+            String[] arreglo = new String[2];
+            arreglo[0] = p.getNombreEmpleado() + " - " + p.getApellidoEmpleado();
+            arreglo[1] = p.getCodFichaEmpleado();
             modeloEmpleados.addRow(arreglo);
         }
         tablaEmpleados.setModel(modeloEmpleados);
@@ -63,7 +70,7 @@ public class RegistroFacturas extends javax.swing.JFrame {
 
             },
             new String [] {
-                "Empleado", "Codigo", "Fecha"
+                "ID Factura", "Empleado", "Codigo", "Fecha"
             }
         ));
         tablaFacturas.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -123,40 +130,39 @@ public class RegistroFacturas extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void filtrar() {
+    private void filtrar(String codFichaResponsable) {
         modeloFacturas.setRowCount(0);
-        for (int i = 0; i < ValoresGlobales.datosFactura.size(); i++) {
-            if (ValoresGlobales.datosFactura.get(i).responsable.equals(codigoResponsable)) {
-                String[] arreglo = new String[3];
-                
-                arreglo[0] = ValoresGlobales.datosFactura.get(i).getNombreEmpleado();
-                arreglo[1] = ValoresGlobales.datosFactura.get(i).getCodFichaEmpleado();
-                arreglo[2] = ValoresGlobales.datosFactura.get(i).fecha;
 
-                modeloFacturas.addRow(arreglo);
-            }
+        int codResponsable = daoE.buscarEmpleado(codFichaResponsable).getCodEmpeado();
+        
+        for (Factura f : daoF.listarFacturasDe(codResponsable)) {
+            Personal p = daoE.buscarEmpleado(codResponsable);
+            String[] a = new String[4];
+            
+            a[0] = String.valueOf(f.getCodFactura());
+            a[1] = p.getNombreEmpleado() + " - " + p.getApellidoEmpleado();
+            a[2] = p.getCodFichaEmpleado();
+            a[3] = f.getFechaFactura() + " - " + f.getHoraFactura();
+
+            modeloFacturas.addRow(a);
         }
 
         tablaFacturas.setModel(modeloFacturas);
     }
 
     private void tablaEmpleadosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tablaEmpleadosMouseClicked
-        
-        
-        nombre = modeloEmpleados.getValueAt(tablaEmpleados.getSelectedRow(), 0).toString();
-        codigoResponsable = modeloEmpleados.getValueAt(tablaEmpleados.getSelectedRow(), 1).toString();
-        filtrar();
+        filtrar(modeloEmpleados.getValueAt(tablaEmpleados.getSelectedRow(), 1).toString());
     }//GEN-LAST:event_tablaEmpleadosMouseClicked
 
     private void btnAbrirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAbrirActionPerformed
-        if (!fecha.equals("")) {
-            FacturaTerminada factTerm = new FacturaTerminada(tablaFacturas.getSelectedRow());
+        if (facturaSeleccionada) {
+            FacturaTerminada factTerm = new FacturaTerminada(Integer.parseInt(modeloFacturas.getValueAt(tablaFacturas.getSelectedRow(), 0).toString()));
             factTerm.setVisible(true);
         }
     }//GEN-LAST:event_btnAbrirActionPerformed
 
     private void tablaFacturasMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tablaFacturasMouseClicked
-        fecha = modeloFacturas.getValueAt(tablaFacturas.getSelectedRow(), 1).toString();
+        facturaSeleccionada = true;
     }//GEN-LAST:event_tablaFacturasMouseClicked
 
     /**
