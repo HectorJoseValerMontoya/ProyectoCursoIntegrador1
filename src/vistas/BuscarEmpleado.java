@@ -5,12 +5,8 @@
 package vistas;
 
 import dao.daoEmpleado;
-import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
-import modelos.DatosEmpleado;
 import modelos.Personal;
-import modelos.ValoresGlobales;
-
 /**
  *
  * @author hecto

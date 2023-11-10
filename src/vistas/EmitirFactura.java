@@ -8,8 +8,6 @@ import java.time.LocalDateTime;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import modelos.Actividad;
-import modelos.DatosEmpleado;
-
 import modelos.Factura;
 import modelos.ValoresGlobales;
 import controladores.Verificaciones;

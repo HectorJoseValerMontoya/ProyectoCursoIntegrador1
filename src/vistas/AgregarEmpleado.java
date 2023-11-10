@@ -7,10 +7,8 @@ package vistas;
 import controladores.Controlar;
 import javax.swing.JOptionPane;
 import modelos.Personal;
-import modelos.ValoresGlobales;
 import controladores.Verificaciones;
 import dao.daoEmpleado;
-import java.util.List;
 
 /**
  *
