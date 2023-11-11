@@ -32,12 +32,6 @@ public class RegistroFacturas extends javax.swing.JFrame {
         initComponents();
         modeloEmpleados = (DefaultTableModel) tablaEmpleados.getModel();
         modeloFacturas = (DefaultTableModel) tablaFacturas.getModel();
-//        String[] arreglo = new String[2];
-//
-//        arreglo[0] = "user";
-//        arreglo[1] = "SD000000";
-
-//        modeloEmpleados.addRow(arreglo);
 
         for (Personal p : daoE.listarEmpleados()) {
             String[] arreglo = new String[2];

@@ -28,6 +28,15 @@ public class Verificaciones {
         }
     }
     
+     public boolean esReal(String n) {
+        try {
+            Double.parseDouble(n);
+            return true;
+        } catch (Exception ex) {
+            return false;
+        }
+    }
+    
     public boolean esVacio(String text){
         return text.isEmpty() || text.isBlank();
     }
