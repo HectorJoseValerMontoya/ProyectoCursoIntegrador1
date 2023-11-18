@@ -125,29 +125,99 @@ public class daoActividad {
         return 1;
     }
 
-    public boolean agregarActividad(Actividad a) {
+    public void agregarActividad(Actividad a) {
 
         String sql = "insert into Actividad values (null, ?,?,?);";
         Connection con;
         PreparedStatement ps;
 
-        if (buscarActividad(a.getCodNombreActividad()) == null) {
+        try {
+            con = conf.MySql.Conexion();
+            ps = con.prepareStatement(sql);
 
-            try {
-                con = conf.MySql.Conexion();
-                ps = con.prepareStatement(sql);
+            ps.setString(1, a.getCodNombreActividad());
+            ps.setDouble(2, a.getPrecioUnitarioActividad());
+            ps.setString(3, a.getDescripcionActividad());
 
-                ps.setString(1, a.getCodNombreActividad());
-                ps.setDouble(2, a.getPrecioUnitarioActividad());
-                ps.setString(3, a.getDescripcionActividad());
+            ps.executeUpdate();
 
-                ps.executeUpdate();
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, e.getMessage());
+        }
+
+    }
+
+    public void eliminarActividad(int cod) {
+        String sql = "delete from Actividad where codActividad = ?;";
+        Connection con;
+        PreparedStatement ps;
+
+        try {
+            con = conf.MySql.Conexion();
+            ps = con.prepareStatement(sql);
+            ps.setInt(1, cod);
+            ps.executeUpdate();
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, e.getMessage());
+        }
+    }
+
+    public void actualizarActividad(Actividad a, int cod) {
+        String sql = "update actividad set codNombre = ?, precioUnitario = ?, descripcion = ? where codActividad = ?;";
+        Connection con;
+        PreparedStatement ps;
+
+        try {
+            con = conf.MySql.Conexion();
+            ps = con.prepareStatement(sql);
+            ps.setString(1, a.getCodNombreActividad());
+            ps.setDouble(2, a.getPrecioUnitarioActividad());
+            ps.setString(3, a.getDescripcionActividad());
+            ps.setInt(4, cod);
+
+            ps.executeUpdate();
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, e.getMessage());
+        }
+    }
+
+    public boolean existeActividad(Actividad a) {
+        String sql = "select * from actividad where codNombre = ?;";
+        Connection con;
+        PreparedStatement ps;
+        ResultSet rs;
+
+        try {
+            con = conf.MySql.Conexion();
+            ps = con.prepareStatement(sql);
+            ps.setString(1, a.getCodNombreActividad());
+            rs = ps.executeQuery();
+            if (rs.next()) {
                 return true;
-
-            } catch (Exception e) {
             }
-        }else{
-            JOptionPane.showMessageDialog(null, "Ya existe el nombre de esta actividad.");
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, e.getMessage());
+        }
+        return false;
+    }
+    
+    public boolean existeActividadDiferenteALaActual(Actividad a){
+        String sql = "select * from actividad where codNombre = ? and codActividad <> ?;";
+        Connection con;
+        PreparedStatement ps;
+        ResultSet rs;
+
+        try {
+            con = conf.MySql.Conexion();
+            ps = con.prepareStatement(sql);
+            ps.setString(1, a.getCodNombreActividad());
+            ps.setInt(2, a.getCodActividad());
+            rs = ps.executeQuery();
+            if (rs.next()) {
+                return true;
+            }
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, e.getMessage());
         }
         return false;
     }

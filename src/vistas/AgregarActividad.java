@@ -25,6 +25,7 @@ public class AgregarActividad extends javax.swing.JFrame {
     public AgregarActividad() {
         initComponents();
         ponerSiguienteActividad();
+       
     }
 
     private void ponerSiguienteActividad() {
@@ -131,19 +132,26 @@ public class AgregarActividad extends javax.swing.JFrame {
             a.setPrecioUnitarioActividad(Double.parseDouble(txtPrecioUnitario.getText()));
             a.setDescripcionActividad(txtDescripcion.getText());
 
-            if (daoA.agregarActividad(a)) {
-
-                txtNombreCodigo.setText("");
-                txtPrecioUnitario.setText("");
-                txtDescripcion.setText("");
+            if (!daoA.existeActividad(a)) {
+                daoA.agregarActividad(a);
+                clearJTextFields();
 
                 ponerSiguienteActividad();
+
+            } else {
+                JOptionPane.showMessageDialog(null, "Ya existe el nombre de esta actividad.");
             }
         } else {
             JOptionPane.showMessageDialog(null, "Error en los datos, o datos faltantes");
         }
 
     }//GEN-LAST:event_btnAgregarActividadActionPerformed
+
+    private void clearJTextFields() {
+        txtNombreCodigo.setText("");
+        txtPrecioUnitario.setText("");
+        txtDescripcion.setText("");
+    }
 
     /**
      * @param args the command line arguments

@@ -31,7 +31,7 @@ public class principal extends javax.swing.JFrame {
         jButton2 = new javax.swing.JButton();
         btnRegistroFacturas = new javax.swing.JButton();
         btnCerrarSesion = new javax.swing.JButton();
-        btnAgregarActividad = new javax.swing.JButton();
+        btnGestionarActividades = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -63,10 +63,10 @@ public class principal extends javax.swing.JFrame {
             }
         });
 
-        btnAgregarActividad.setText("Agregar Actividad");
-        btnAgregarActividad.addActionListener(new java.awt.event.ActionListener() {
+        btnGestionarActividades.setText("Gestionar Actividad(es)");
+        btnGestionarActividades.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnAgregarActividadActionPerformed(evt);
+                btnGestionarActividadesActionPerformed(evt);
             }
         });
 
@@ -80,13 +80,12 @@ public class principal extends javax.swing.JFrame {
                 .addContainerGap())
             .addGroup(layout.createSequentialGroup()
                 .addGap(46, 46, 46)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                        .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jButton2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(btnRegistroFacturas, javax.swing.GroupLayout.PREFERRED_SIZE, 128, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(btnAgregarActividad, javax.swing.GroupLayout.PREFERRED_SIZE, 128, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(54, Short.MAX_VALUE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jButton2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(btnRegistroFacturas, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(btnGestionarActividades, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(32, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -98,8 +97,8 @@ public class principal extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnRegistroFacturas)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(btnAgregarActividad)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 21, Short.MAX_VALUE)
+                .addComponent(btnGestionarActividades)
+                .addGap(18, 21, Short.MAX_VALUE)
                 .addComponent(btnCerrarSesion)
                 .addGap(14, 14, 14))
         );
@@ -127,10 +126,10 @@ public class principal extends javax.swing.JFrame {
         this.dispose();
     }//GEN-LAST:event_btnCerrarSesionActionPerformed
 
-    private void btnAgregarActividadActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarActividadActionPerformed
-        AgregarActividad agregarActiviad = new AgregarActividad();
-        agregarActiviad.setVisible(true);
-    }//GEN-LAST:event_btnAgregarActividadActionPerformed
+    private void btnGestionarActividadesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGestionarActividadesActionPerformed
+        GestionarActividades ga = new GestionarActividades();
+        ga.setVisible(true);
+    }//GEN-LAST:event_btnGestionarActividadesActionPerformed
 
     /**
      * @param args the command line arguments
@@ -169,8 +168,8 @@ public class principal extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton btnAgregarActividad;
     private javax.swing.JButton btnCerrarSesion;
+    private javax.swing.JButton btnGestionarActividades;
     private javax.swing.JButton btnRegistroFacturas;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;

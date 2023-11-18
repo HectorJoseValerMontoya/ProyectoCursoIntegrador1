@@ -41,4 +41,6 @@ public class Verificaciones {
         return text.isEmpty() || text.isBlank();
     }
     
+    
+    
 }
