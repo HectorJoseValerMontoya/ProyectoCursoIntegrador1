@@ -17,6 +17,7 @@ public class GestionarActividades extends javax.swing.JFrame {
 
     DefaultTableModel modelo;
     daoActividad daoA = new daoActividad();
+    Actividad aEscogida = null;
 
     /**
      * Creates new form GestionarActividades
@@ -70,7 +71,7 @@ public class GestionarActividades extends javax.swing.JFrame {
         lblNumeroActividadActualizar = new javax.swing.JLabel();
         btnActualizar = new javax.swing.JButton();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
         btnAgregarActividad.setText("Agregar Actividad");
         btnAgregarActividad.addActionListener(new java.awt.event.ActionListener() {
@@ -210,19 +211,28 @@ public class GestionarActividades extends javax.swing.JFrame {
     }//GEN-LAST:event_btnAgregarActividadActionPerformed
 
     private void btnEliminarActividadActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarActividadActionPerformed
-        int cod = Integer.parseInt(modelo.getValueAt(tablaActividades.getSelectedRow(), 0).toString());
-        daoA.eliminarActividad(cod);
-        actualizarTabla();
+        if (aEscogida != null) {
+            int cod = Integer.parseInt(modelo.getValueAt(tablaActividades.getSelectedRow(), 0).toString());
+            daoA.eliminarActividad(cod);
+            actualizarTabla();
+            clearEdit();
+        } else {
+            JOptionPane.showMessageDialog(this, "No se ha escogido una Actividad a eliminar");
+        }
     }//GEN-LAST:event_btnEliminarActividadActionPerformed
 
     private void btnActualizarActividadesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnActualizarActividadesActionPerformed
-        int cod = Integer.parseInt(modelo.getValueAt(tablaActividades.getSelectedRow(), 0).toString());
-        lblNumeroActividadActualizar.setText(String.valueOf(cod));
-        txtNombreActividad.setText(modelo.getValueAt(tablaActividades.getSelectedRow(), 1).toString());
-        txtPrecioUnitario.setText(modelo.getValueAt(tablaActividades.getSelectedRow(), 2).toString());
-        txtDescripcion.setText(modelo.getValueAt(tablaActividades.getSelectedRow(), 3).toString());
+        if (aEscogida != null) {
+            int cod = Integer.parseInt(modelo.getValueAt(tablaActividades.getSelectedRow(), 0).toString());
+            lblNumeroActividadActualizar.setText(String.valueOf(cod));
+            txtNombreActividad.setText(modelo.getValueAt(tablaActividades.getSelectedRow(), 1).toString());
+            txtPrecioUnitario.setText(modelo.getValueAt(tablaActividades.getSelectedRow(), 2).toString());
+            txtDescripcion.setText(modelo.getValueAt(tablaActividades.getSelectedRow(), 3).toString());
 
-        btnActualizar.setVisible(true);
+            btnActualizar.setVisible(true);
+        }else{
+            JOptionPane.showMessageDialog(this, "Debe seleccionar una Actividad a actualizar.");
+        }
     }//GEN-LAST:event_btnActualizarActividadesActionPerformed
 
     private void btnActualizarTablaActividadesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnActualizarTablaActividadesActionPerformed
@@ -243,7 +253,9 @@ public class GestionarActividades extends javax.swing.JFrame {
     }//GEN-LAST:event_btnActualizarActionPerformed
 
     private void tablaActividadesMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tablaActividadesMouseClicked
-        clearEdit();
+        //JOptionPane.showMessageDialog(this, tablaActividades.getSelectedRow());
+        aEscogida = daoA.buscarActividad(modelo.getValueAt(tablaActividades.getSelectedRow(), 1).toString());
+        lblNumeroActividadActualizar.setText(String.valueOf(aEscogida.getCodActividad()));
     }//GEN-LAST:event_tablaActividadesMouseClicked
 
     private void clearEdit() {

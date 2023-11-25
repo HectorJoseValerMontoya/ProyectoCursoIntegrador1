@@ -80,7 +80,7 @@ public class daoEmpleado {
 
         return p;
     }
-    
+
     public Personal buscarEmpleado(int codEmpleado) {
         Personal p = null;
         String sql = "select  * from empleado where codEmpleado = ?;";
@@ -133,5 +133,44 @@ public class daoEmpleado {
             System.out.println("Error:" + e);
         }
 
+    }
+
+    public void EliminarEmpleado(Personal p) {
+        String sql = "delete from empleado where codEmpleado = ?;";
+        Connection con;
+        PreparedStatement ps;
+
+        try {
+            con = conf.MySql.Conexion();
+            ps = con.prepareStatement(sql);
+            ps.setInt(1, p.getCodEmpeado());
+
+            ps.executeUpdate();
+
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, e.getMessage());
+            System.out.println("Error:" + e);
+        }
+    }
+    
+    public void actualizarEmpleado(Personal p){
+        String sql = "update empleado set proceso = ?, area = ?, contra = ? where codEmpleado = ?;";
+        Connection con;
+        PreparedStatement ps;
+
+        try {
+            con = conf.MySql.Conexion();
+            ps = con.prepareStatement(sql);
+            ps.setString(1, p.getProceso());
+            ps.setString(2, p.getAreaEmpleado());
+            ps.setString(3, p.getPasswordEmpleado());
+            ps.setInt(4, p.getCodEmpeado());
+            
+            ps.executeUpdate();
+
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, e.getMessage());
+            System.out.println("Error:" + e);
+        }
     }
 }
