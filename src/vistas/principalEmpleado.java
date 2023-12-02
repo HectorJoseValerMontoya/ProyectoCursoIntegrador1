@@ -15,6 +15,7 @@ public class principalEmpleado extends javax.swing.JFrame {
      */
     public principalEmpleado() {
         initComponents();
+        this.setLocationRelativeTo(null);//Se centra
     }
 
     /**

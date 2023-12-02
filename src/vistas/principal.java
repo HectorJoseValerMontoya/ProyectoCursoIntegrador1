@@ -16,6 +16,7 @@ public class principal extends javax.swing.JFrame {
      */
     public principal() {
         initComponents();
+        this.setLocationRelativeTo(null);//Se centra
     }
 
     /**

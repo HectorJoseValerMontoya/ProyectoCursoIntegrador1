@@ -34,6 +34,7 @@ public class EmitirFactura extends javax.swing.JFrame {
 
     public EmitirFactura() {
         initComponents();
+        this.setLocationRelativeTo(null);//Se centra
     }
 
     Factura factura = new Factura();

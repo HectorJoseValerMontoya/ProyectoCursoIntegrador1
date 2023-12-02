@@ -21,6 +21,7 @@ public class AgregarEmpleado extends javax.swing.JFrame {
      */
     public AgregarEmpleado() {
         initComponents();
+        this.setLocationRelativeTo(null);//Se centra
         btnAgregar.setEnabled(false);
     }
 

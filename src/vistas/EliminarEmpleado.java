@@ -25,6 +25,7 @@ public class EliminarEmpleado extends javax.swing.JFrame {
      */
     public EliminarEmpleado() {
         initComponents();
+        this.setLocationRelativeTo(null);//Se centra
         model = (DefaultTableModel) tableEmpleados.getModel();
     }
 

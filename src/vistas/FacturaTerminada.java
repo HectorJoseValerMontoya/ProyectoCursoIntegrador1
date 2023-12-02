@@ -69,6 +69,7 @@ public class FacturaTerminada extends javax.swing.JFrame {
 
     public FacturaTerminada(int codFactura) {
         initComponents();
+        this.setLocationRelativeTo(null);//Se centra
         mostrarFact(codFactura);
     }
 

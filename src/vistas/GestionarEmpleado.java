@@ -15,6 +15,7 @@ public class GestionarEmpleado extends javax.swing.JFrame {
      */
     public GestionarEmpleado() {
         initComponents();
+        this.setLocationRelativeTo(null);//Se centra
     }
 
     /**

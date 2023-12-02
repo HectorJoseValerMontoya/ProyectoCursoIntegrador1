@@ -20,6 +20,7 @@ public class BuscarEmpleado extends javax.swing.JFrame {
 
     public BuscarEmpleado() {
         initComponents();
+        this.setLocationRelativeTo(null);//Se centra
         model = (DefaultTableModel) tableEmpleados.getModel();
         btnEmitirFactura.setEnabled(false);
     }

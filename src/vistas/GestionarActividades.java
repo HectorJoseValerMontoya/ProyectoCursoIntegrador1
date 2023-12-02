@@ -24,6 +24,7 @@ public class GestionarActividades extends javax.swing.JFrame {
      */
     public GestionarActividades() {
         initComponents();
+        this.setLocationRelativeTo(null);//Se centra
         btnActualizar.setVisible(false);
         actualizarTabla();
     }

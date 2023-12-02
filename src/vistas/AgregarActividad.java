@@ -24,6 +24,7 @@ public class AgregarActividad extends javax.swing.JFrame {
 
     public AgregarActividad() {
         initComponents();
+        this.setLocationRelativeTo(null);//Se centra
         ponerSiguienteActividad();
        
     }

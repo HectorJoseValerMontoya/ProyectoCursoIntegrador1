@@ -30,6 +30,7 @@ public class RegistroFacturas extends javax.swing.JFrame {
 
     public RegistroFacturas() {
         initComponents();
+        this.setLocationRelativeTo(null);//Se centra
         modeloEmpleados = (DefaultTableModel) tablaEmpleados.getModel();
         modeloFacturas = (DefaultTableModel) tablaFacturas.getModel();
 

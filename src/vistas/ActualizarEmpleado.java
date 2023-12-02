@@ -25,6 +25,7 @@ public class ActualizarEmpleado extends javax.swing.JFrame {
      */
     public ActualizarEmpleado() {
         initComponents();
+        this.setLocationRelativeTo(null);//Se centra
         model = (DefaultTableModel) tableEmpleados.getModel();
     }
 
